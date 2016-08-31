@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import {render} from 'react-dom';
+import  '../public/styles.css';
 
 // Parent Component
 class GroceryList extends Component {
     render() {
         return (
             <ul>
-                <ListItem quantity="1" name="Bread" />
-                <ListItem quantity="6" name="Eggs" />
-                <ListItem quantity="2" name="Milk" />
+                <ListItem index="1" quantity="1" name="Bread" />
+                <ListItem index="2" quantity="6" name="Eggs" />
+                <ListItem index="3" quantity="2" name="Milk" />
             </ul>
         );
     }
@@ -19,7 +20,7 @@ class ListItem extends Component {
     render() {
         return (
             <li>
-                {this.props.quantity}•{this.props.name}
+                <a href="#">{this.index} {this.props.quantity}•{this.props.name}</a>
             </li>
         );
     }
