@@ -1,6 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import {render} from 'react-dom';
-import  '../public/styles.css';
+//import  'whatwg-fetch';
+//import  '../public/styles.css';
+
+import {Router, Route, Link, browserHistory} from 'react-router';
+
+import About from './About';
+import Home from './Home';
+import Repos from './Repos';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <header>App</header>
+        <menu>
+          <ul>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/repos">Repos</Link></li>
+          </ul>
+        </menu>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+render((
+  <Router history={browserHistory}>
+  <Route path="/" component={App}>
+    <Route path="about" component={About} />
+    <Route path="repos" component={Repos} />
+  </Route>
+  </Router>
+),
+  document.getElementById('root'));
 
 /*
 class Search extends  Component {
@@ -83,6 +117,7 @@ Greeter.defaultProps = {
 }
 */
 
+/** 带搜索功能的联系人列表
 // Main (statefull) component.
 // Renders a SearchBar and a ContactList
 // Passes down filterText state and handleUserInput callback as props
@@ -184,5 +219,90 @@ let contacts = [
   {name: "Liu Weijia", email: "liuvg@a.com"}
 ];
 
+class ContactsAppContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      contacts: []
+    }
+  }
 
-render(<ContactApp contacts={contacts} />, document.getElementById('root'));
+  componentDidMount() {
+    fetch('./contacts.json')
+    .then((response) => response.json())
+    .then((jsonData) => {
+      this.setState({contacts: jsonData});
+    })
+    .catch((error) => {
+      console.log(`Errro fetching data and parse data ${error}`);
+    });
+  }
+
+  render() {
+    return (
+      <ContactApp contacts={this.state.contacts} />
+    );
+  }
+}
+
+
+render(<ContactsAppContainer />, document.getElementById('root'));
+ */
+
+/*
+import update from 'react-addons-update';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+class AnimatedShoppingList extends Component {
+  constructor() {
+    super();
+    this.state = {
+      title:'购物车列表',
+      items: [
+        {id:1, name:"Milk"},
+        {id:2, name:"Agg"},
+        {id:3, name:"Bread"}
+      ]
+    }
+  }
+
+  handleChange(event) {
+    if (event.key === 'Enter') {
+      let newItem = {id:Date.now(), name:event.target.value};
+      let items = update(this.state.items, {$push:[newItem]});
+      this.setState({items: items});
+      event.target.value = '';
+    }
+  }
+
+  handleRemove(i) {
+    let items = update(this.state.items, {$splice:[[i, 1]]});
+    this.setState({items: items});
+  }
+
+  render() {
+    let shoppintItems = this.state.items.map((item, i) => (
+      <div key={item.id}
+           className="item"
+           onClick={this.handleRemove.bind(this, i)} >
+        {item.name + 'A'}
+      </div>
+    ));
+    return (
+        <div>
+          <p>{this.state.title}</p>
+          <ReactCSSTransitionGroup transitionName="example"
+                                   transitionEnterTimeout={300}
+                                   transitionLeaveTimeout={300}
+                                   transitionAppear={true}
+                                   transitionAppearTimeout={300}>
+          {shoppintItems}
+          </ReactCSSTransitionGroup>
+          <input type="text" value={this.state.newItem} onKeyDown={this.handleChange.bind(this)} />
+        </div>
+    );
+  }
+}
+
+render(<AnimatedShoppingList />, document.getElementById('root'));
+*/
