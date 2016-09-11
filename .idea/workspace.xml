@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bf765925-a0c5-45e3-a590-119d7f39a5fe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/App.js" afterPath="$PROJECT_DIR$/app/App.js" />
     </list>
     <ignored path="react_demo.iws" />
     <ignored path=".idea/workspace.xml" />
