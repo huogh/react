@@ -3,38 +3,93 @@ import {render} from 'react-dom';
 //import  'whatwg-fetch';
 //import  '../public/styles.css';
 
-import {Router, Route, Link, browserHistory} from 'react-router';
-
-import About from './About';
-import Home from './Home';
-import Repos from './Repos';
+import {Router, Route, Link, IndexRoute, Redirect} from 'react-router';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <header>App</header>
-        <menu>
-          <ul>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/repos">Repos</Link></li>
-          </ul>
-        </menu>
+        <h1>App</h1>
+        <ul>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/inbox">Inbox</Link></li>
+        </ul>
         {this.props.children}
       </div>
     );
   }
 }
 
-render((
-  <Router history={browserHistory}>
-  <Route path="/" component={App}>
-    <Route path="about" component={About} />
-    <Route path="repos" component={Repos} />
-  </Route>
-  </Router>
-),
-  document.getElementById('root'));
+class Dashboard extends Component {
+  render() {
+    return (
+      <div>
+        <h2>Welcome to the app!</h2>
+      </div>
+    );
+  }
+}
+
+class About extends Component {
+  render() {
+    return (
+      <div><h2>About</h2></div>
+    );
+  }
+}
+
+class Inbox extends Component {
+  render() {
+    return (
+      <div>
+        <h2>Inbox</h2>
+        {this.props.children || 'Welcome to Inbox'}
+      </div>
+    );
+  }
+}
+
+class Message extends Component {
+  render() {
+    return (
+      <div>
+        <h3>Message: {this.props.params.id}</h3>
+      </div>
+    );
+  }
+}
+
+render(
+  <Router>
+    <Route path="/" component={App}>
+      <IndexRoute component={Dashboard}/>
+      <Route path="about" component={About} onEnter={()=>{
+        console.log("About onEnter");
+      }} onLeave={()=>{
+        console.log("About onLeave");
+      }}/>
+      <Route path="inbox" component={Inbox} onEnter={() => {
+        console.log("Inbox onEnter");
+      }} onLeave={() => {
+        console.log("Inbox onLeave");
+      }}>
+        <Redirect from="message/:id" to="/message/:id" />
+      </Route>
+      <Route componet={Inbox} onEnter={() => {
+        console.log("The Inbox onEnter");
+      }} onLeave={() => {
+        console.log("The Inbox onLeave");
+      }}>
+        <Route path="message(/:id)" component={Message} onEnter={() => {
+          console.log("Message onEnter");
+        }} onLeave={() => {
+          console.log("Message onLeave");
+        }}/>
+      </Route>
+
+    </Route>
+  </Router>, document.getElementById('root'));
+
 
 /*
 class Search extends  Component {
